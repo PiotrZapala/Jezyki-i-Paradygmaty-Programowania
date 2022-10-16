@@ -1,1 +1,1 @@
-# Jezyki-i-Paradygmaty-Programowania
+# Jezyki i Paradygmaty Programowania
