@@ -24,11 +24,13 @@ int extended_euclidean_algorithm(int a, int b, int x, int y) {
         y = 1;
         return b;
     }
-    int gcd = extended_euclidean_algorithm(b%a, a, x, y);
-    int x1 = x, y1 = y;
-    x = y1 - (b/a) * x1;
-    y = x1;
-    return gcd;
+    else {
+        int gcd = extended_euclidean_algorithm(b%a, a, x, y);
+        int x1 = x, y1 = y;
+        x = y1 - (b/a) * x1;
+        y = x1;
+        return gcd;
+    }
 }
 
 int diophantine_equation_solver(int a, int b, int c) {
