@@ -1,4 +1,5 @@
 #include "recursion.h"
+#include <stdio.h>
 
 int factorial(int n) {
     if (n==0) 
@@ -18,23 +19,23 @@ int greatest_common_divisor(int a, int b) {
         return greatest_common_divisor(a, b-a);
 }
 
-int extended_euclidean_algorithm(int a, int b, int x, int y) {
-    if (a == 0) {
-        x = 0;
-        y = 1;
-        return b;
+int extended_euclidean_algorithm(int a, int b, int *x, int *y) {
+    if (b == 0) {
+        *x = 1;
+        *y = 0;
+        return a;
     }
     else {
-        int gcd = extended_euclidean_algorithm(b%a, a, x, y);
-        int x1 = x, y1 = y;
-        x = y1 - (b/a) * x1;
-        y = x1;
+        int x1 = *x, y1 = *y;
+        int gcd = extended_euclidean_algorithm(b, a%b, &x1, &y1);
+        *x = y1; 
+        *y = x1 - (a/b) * y1;
         return gcd;
     }
 }
 
-int diophantine_equation_solver(int a, int b, int c) {
-    int x, y;
+Struct diophantine_equation_solver(int a, int b, int c) {
+    Struct s;
     if (a == 0 && b == 0) {
         if (c == 0) {
             printf("Solutions exist!");
@@ -43,11 +44,13 @@ int diophantine_equation_solver(int a, int b, int c) {
             printf("Solution does not exist!");
         }
     }
-    int gcd = extended_euclidean_algorithm(a, b, x, y);
+    int gcd = extended_euclidean_algorithm(a, b, &s.x, &s.y);
     if (c % gcd != 0) {
         printf("Solution does not exist!");
     }
     else {
-        return x * (c / gcd), y * (c / gcd);
+        s.x = s.x * (c / gcd);
+        s.y = s.y * (c / gcd);
+        return s;
     }
 }
