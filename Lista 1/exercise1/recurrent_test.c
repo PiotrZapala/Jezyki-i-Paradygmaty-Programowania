@@ -1,4 +1,4 @@
-#include "recursion.h"
+#include "recurrent.h"
 #include <stdio.h>
 
 int main() {
@@ -9,7 +9,7 @@ int main() {
     printf("%d", result2);
     printf("\n");
     Struct result;
-    result = diophantine_equation_solver(4, 18, 10);
+    result = diophantine_equation_solver(25, 18, 10);
     printf("x = %d and y = %d\n", result.x, result.y);
     return 0;
 }

@@ -1,5 +1,5 @@
-#ifndef __LOOP_H__
-#define __LOOP_H__
+#ifndef __RECURRENT_H__
+#define __RECURRENT_H__
 
 int factorial(int n);
 
@@ -15,4 +15,4 @@ typedef struct diophantine Struct;
 
 Struct diophantine_equation_solver(int a, int b, int c);
 
-#endif /*__LOOP_H__*/
+#endif /*__RECURRENT_H__*/
