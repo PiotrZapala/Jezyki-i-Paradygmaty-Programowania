@@ -47,6 +47,7 @@ Struct diophantine_equation_solver(int a, int b, int c) {
     int gcd = greatest_common_divisor(a, b);
 
     extended_euclidean_algorithm(a, b, &s.x, &s.y);
+    
     if (c % gcd != 0) {
         printf("Solution does not exist!");
     }
