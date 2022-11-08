@@ -1,58 +1,90 @@
 #include "loop.h"
 #include <stdio.h>
 
-int factorial(int n) {
+int factorial(int n)
+{
     int fact = 1;
-    for(int i = 1; i <= n; i++) {
+    for (int i = 1; i <= n; i++)
+    {
         fact = fact * i;
     }
     return fact;
 }
 
-int greatest_common_divisor(int a, int b) {
+int greatest_common_divisor(int a, int b)
+{
     int gcd;
-    for(int i = 1; i <= a && i <= b; i++) {
-        if (a % i == 0 && b % i == 0) {
+    for (int i = 1; i <= a && i <= b; i++)
+    {
+        if (a % i == 0 && b % i == 0)
+        {
             gcd = i;
         }
     }
     return gcd;
 }
 
-int extended_euclidean_algorithm(int a, int b, int *x, int *y) {
+int extended_euclidean_algorithm(int a, int b, int *x, int *y)
+{
     *x = 1, *y = 0;
     int x1 = *y, y1 = *x;
     int a1 = a, b1 = b;
-    while(b1) {
-        int q = a1/b1;
-        a1 = b1;
-        b1 = a1 - q * b1;
-        *x = x1;
-        x1 = *x - q * x1;
-        *y = y1;
-        y1 = *y - q * y1;
+    int temp, temp1, temp2, temp3;
+    if (b > a)
+    {
+        temp = a;
+        a = b;
+        b = temp;
     }
-    return a1;
+    while (b != 0)
+    {
+        int q = a / b;
+        temp1 = a % b;
+        a = b;
+        b = temp1;
+
+        temp2 = *x;
+        *x = x1 - q * *x;
+        x1 = temp2;
+
+        temp3 = *y;
+        *y = y1 - q * *y;
+        y1 = temp3;
+    }    
+    *x = x1;
+    *y = y1;
 }
 
-Struct diophantine_equation_solver(int a, int b, int c) {
+Struct diophantine_equation_solver(int a, int b, int c)
+{
     Struct s;
-    if (a == 0 && b == 0) {
-        if (c == 0) {
+    if (a == 0 && b == 0)
+    {
+        if (c == 0)
+        {
             printf("Solutions exist!");
         }
-        else {
+        else
+        {
             printf("Solution does not exist!");
         }
     }
-    int gcd = extended_euclidean_algorithm(a, b, &s.x, &s.y);
-    if (c % gcd != 0) {
-        //printf("Solution does not exist!");
+
+    printf("Solution does not exist!");
+
+    extended_euclidean_algorithm(a, b, &s.x, &s.y);
+
+    int gcd = greatest_common_divisor(a, b);
+
+    if (c % gcd != 0)
+    {
+        printf("Solution does not exist!");
         s.x = 0;
         s.y = 0;
         return s;
     }
-    else {
+    else
+    {
         s.x = s.x * (c / gcd);
         s.y = s.y * (c / gcd);
         return s;

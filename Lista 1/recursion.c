@@ -27,10 +27,9 @@ int extended_euclidean_algorithm(int a, int b, int *x, int *y) {
     }
     else {
         int x1 = *x, y1 = *y;
-        int gcd = extended_euclidean_algorithm(b, a%b, &x1, &y1);
+        extended_euclidean_algorithm(b, a%b, &x1, &y1);
         *x = y1; 
         *y = x1 - (a/b) * y1;
-        return gcd;
     }
 }
 
@@ -44,7 +43,10 @@ Struct diophantine_equation_solver(int a, int b, int c) {
             printf("Solution does not exist!");
         }
     }
-    int gcd = extended_euclidean_algorithm(a, b, &s.x, &s.y);
+    
+    int gcd = greatest_common_divisor(a, b);
+
+    extended_euclidean_algorithm(a, b, &s.x, &s.y);
     if (c % gcd != 0) {
         printf("Solution does not exist!");
     }
