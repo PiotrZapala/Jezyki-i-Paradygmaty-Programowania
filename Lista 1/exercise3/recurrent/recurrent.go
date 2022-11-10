@@ -34,8 +34,30 @@ func ExtendedEuclideanAlgorithm(a int, b int, x *int, y *int) int {
 	return gcd
 }
 
-func DiophantineEquationSolver(a int, b int, c int) int {
+type Result struct {
+	x, y int
+}
 
-	return 0
+func DiophantineEquationSolver(a int, b int, c int) [2]int {
+	var Results Result
+	Results.x = 0
+	Results.y = 0
+	var result [2]int
+	if a == 0 && b == 0 {
+		if c == 0 {
+			println("Solution exist!")
+		} else {
+			println("Solution does not exist!")
+		}
+	}
 
+	var gcd int = ExtendedEuclideanAlgorithm(a, b, &Results.x, &Results.y)
+
+	if c%gcd != 0 {
+		println("Solution does not exist!")
+	} else {
+		result[0] = Results.x * (c / gcd)
+		result[1] = Results.y * (c / gcd)
+	}
+	return result
 }
