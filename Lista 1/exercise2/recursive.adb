@@ -1,6 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Recurrent is  
+package body Recursive is  
 
     function Factorial
     (N : Integer) return Integer is
@@ -50,9 +50,9 @@ package body Recurrent is
     end Extended_Euclidean_Algorithm;
 
     function Diophantine_Equation_Solver
-    (A, B, C : Integer) return My_Int_Array is
+    (A, B, C : Integer) return Results is
     Results1 : My_Int_Array;
-    Results2 : My_Int_Array;
+    Results2 : Results;
     begin
         if A = 0 and B = 0 then
             if C = 0 then 
@@ -65,11 +65,11 @@ package body Recurrent is
         if C mod Results1(3) /= 0 then
             Put_Line ("Solution Does not exist!");
         else
-            Results2(1) := Results1(1) * (C/Results1(3));
-            Results2(2) := Results1(2) * (C/Results1(3));
-            Results2(3) := Results1(3);
+            Results2.x := Results1(1) * (C/Results1(3));
+            Results2.y := Results1(2) * (C/Results1(3));
+            Results2.gcd := Results1(3);
         end if;
         return Results2;
     end Diophantine_Equation_Solver;
 
-end Recurrent;
+end Recursive;

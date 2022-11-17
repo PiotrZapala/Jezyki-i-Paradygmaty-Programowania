@@ -1,65 +1,51 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Iterative is  
+package body Recursive is  
 
     function Factorial
     (N : Integer) return Integer is
-    Fact : Integer;
     begin
-        Fact := 1;
-        for I in 1 .. N loop
-            Fact := Fact * I;
-        end loop;
-        return Fact;
+        if N = 0 then
+            return 1;
+        else
+            return N*Factorial(N-1);
+        end if;
     end Factorial;
 
     function Greatest_Common_Divisor 
     (A, B : Integer) return Integer is
-    Gcd, I : Integer;
     begin
-        I := 1;
-        while I <= A and I <= B loop
-            if A mod I = 0 and B mod I = 0 then
-                Gcd := I;
-            end if;
-            I := I + 1;
-        end loop;
-        return Gcd;
+        if A = 0 or B = 0 then
+            return 0;
+        elsif A = B then
+            return A;
+        elsif A > B then
+            return Greatest_Common_Divisor(A-B, B);
+        else
+            return Greatest_Common_Divisor(A, B-A);
+        end if;
     end Greatest_Common_Divisor;
 
     function Extended_Euclidean_Algorithm
-    (A, B: Integer) return My_Int_Array is
-    X, Y, X1, Y1, Q, Temp, Temp1, Temp2, Temp3, A1, B1 : Integer;
+    (A, B : Integer) return My_Int_Array is
+    X, Y : Integer;
     Results : My_Int_Array;
     begin 
-        A1 := A;
-        B1 := B;
-        X := 1;
+        X := 0;
         Y := 0;
-        X1 := Y;
-        Y1 := X;
-        if B1 > A1 then
-            Temp := A1;
-            A1 := B1;
-            B1 := Temp;
+        if B = 0 then
+            Results(1) := 1;
+            Results(2) := 0;
+            Results(3) := A;
+            return Results;
         end if;
-        while B1 /= 0 loop
-            Q := A1/B1;
-            Temp1 := A1 mod B1;
-            A1 := B1;
-            B1 := Temp1;
-
-            Temp2 := X;
-            X := X1 - Q * X;
-            X1 := Temp2;
-
-            Temp3 := Y;
-            Y := Y1 - Q * Y;
-            Y1 := Temp3;
-        end loop;
-        Results(1) := Y1;
-        Results(2) := X1;
-        Results(3) := A1;
+        Results(1) := X;
+        Results(2) := Y;
+        Results := Extended_Euclidean_Algorithm(B, A mod B);
+        X := Results(2);
+        Y := Results(1) - (A/B) * Results(2);
+        Results(1) := X;
+        Results(2) := Y;
         return Results;
     end Extended_Euclidean_Algorithm;
 
@@ -86,4 +72,4 @@ package body Iterative is
         return Results2;
     end Diophantine_Equation_Solver;
 
-end Iterative;
+end Recursive;

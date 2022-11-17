@@ -2,7 +2,7 @@ package main
 
 import (
 	iterative "jipp/packages/iterative"
-	recurrent "jipp/packages/recurrent"
+	recursive "jipp/packages/recursive"
 )
 
 func main() {
@@ -14,11 +14,11 @@ func main() {
 	println(resulti[0])
 	println(resulti[1])
 	println()
-	var nr int = recurrent.Factorial(7)
+	var nr int = recursive.Factorial(7)
 	println(nr)
-	var gcdr int = recurrent.GreatestCommonDivisor(36, 18)
+	var gcdr int = recursive.GreatestCommonDivisor(36, 18)
 	println(gcdr)
-	var resultsr = recurrent.DiophantineEquationSolver(25, 18, 10)
+	var resultsr = recursive.DiophantineEquationSolver(25, 18, 10)
 	println(resultsr[0])
 	println(resultsr[1])
 }
