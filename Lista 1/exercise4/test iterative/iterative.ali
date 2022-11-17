@@ -1,0 +1,85 @@
+V "GNAT Lib v9"
+P ZX
+
+RN
+RV NO_DIRECT_BOOLEAN_OPERATORS
+RV NO_IO
+RV SPARK_05
+
+U iterative%b		iterative.adb		9f14fd8d NE OO PK
+W ada%s			ada.ads			ada.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+
+U iterative%s		iterative.ads		35924752 EE NE OO PK
+
+D ada.ads		20210601075304 76789da1 ada%s
+D a-except.ads		20210601075304 291912d5 ada.exceptions%s
+D a-ioexce.ads		20210601075304 e4a01f64 ada.io_exceptions%s
+D a-stream.ads		20210601075304 119b8fb3 ada.streams%s
+D a-tags.ads		20210601075304 491b781d ada.tags%s
+D a-textio.ads		20210601075304 881db35a ada.text_io%s
+D a-unccon.ads		20210601075304 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20210601075304 5ab55268 interfaces%s
+D i-cstrea.ads		20210601075304 e53d8b8e interfaces.c_streams%s
+D iterative.ads		20221117095706 35924752 iterative%s
+D iterative.adb		20221117095651 229b0985 iterative%b
+D system.ads		20210601075304 4635ec04 system%s
+D s-crtl.ads		20210601075304 0ebbdb71 system.crtl%s
+D s-exctab.ads		20210601075304 54135002 system.exception_table%s
+D s-ficobl.ads		20210601075304 078245e4 system.file_control_block%s
+D s-parame.ads		20210601075304 48ec542b system.parameters%s
+D s-secsta.ads		20210601075304 20bbe636 system.secondary_stack%s
+D s-soflin.ads		20210601075304 a7318a92 system.soft_links%s
+D s-stache.ads		20210601075304 a37c21ec system.stack_checking%s
+D s-stalib.ads		20210601075304 09bd3940 system.standard_library%s
+D s-stoele.ads		20210601075304 2dc34a04 system.storage_elements%s
+D s-traent.ads		20210601075304 005bf670 system.traceback_entries%s
+D s-unstyp.ads		20210601075304 34867c83 system.unsigned_types%s
+D s-wchcon.ads		20210601075304 1b7d22d2 system.wch_con%s
+X 1 ada.ads
+16K9*Ada 20e8 11|1r6 1r23
+X 6 a-textio.ads
+49K13*Text_IO 471e16 11|1w10 1r27
+263U14*Put_Line 11|73s17 75s17 80s13
+X 10 iterative.ads
+1K9*Iterative 22l5 22e14 11|3b14 89l5 89t14
+3A10*My_Int_Array(integer)<integer> 16r29 11|31r28 33r15 68r16
+4R10*Results 8e15 19r32 11|67r32 69r16
+5i9*x{integer} 11|82m22
+6i9*y{integer} 11|83m22
+7i9*gcd{integer} 11|84m22
+9V14*Factorial{integer} 10>6 11i<c,factorial>23 11|5b14 14l9 14t18
+10i6 N{integer} 11|6b6 10r23
+12V14*Greatest_Common_Divisor{integer} 13>6 13>9 14i<c,greatest_common_divisor>23
+. 11|16b14 28l9 28t32
+13i6 A{integer} 11|17b6 21r20 22r16
+13i9 B{integer} 11|17b9 21r31 22r32
+15V14*Extended_Euclidean_Algorithm{3A10} 16>6 16>9 17i<c,extended_euclidean_algorithm>23
+. 11|30b14 64l9 64t37 78s21
+16i6 A{integer} 11|31b6 35r15
+16i9 B{integer} 11|31b9 36r15
+18V14*Diophantine_Equation_Solver{4R10} 19>6 19>9 19>12 20i<c,diophantine_equation_solver>23
+. 11|66b14 87l9 87t36
+19i6 A{integer} 11|67b6 71r12 78r50
+19i9 B{integer} 11|67b9 71r22 78r53
+19i12 C{integer} 11|67b12 72r16 79r12 82r42 83r42
+X 11 iterative.adb
+7i5 Fact{integer} 9m9 11m13 11r21 13r16
+10i13 I{integer} 11r28
+18i5 Gcd{integer} 23m17 27r16
+18i10 I{integer} 20m9 21r15 21r26 22r22 22r38 23r24 25m13 25r18
+32i5 X{integer} 37m9 40r15 52r22 53m13 53r27
+32i8 Y{integer} 38m9 39r15 56r22 57m13 57r27
+32i11 X1{integer} 39m9 53r18 54m13 61r23
+32i15 Y1{integer} 40m9 57r18 58m13 60r23
+32i19 Q{integer} 47m13 53r23 57r23
+32i22 Temp{integer} 42m13 44r19
+32i28 Temp1{integer} 48m13 50r19
+32i35 Temp2{integer} 52m13 54r19
+32i42 Temp3{integer} 56m13 58r19
+32i49 A1{integer} 35m9 41r17 42r21 43m13 47r18 48r22 49m13 62r23
+32i53 B1{integer} 36m9 41r12 43r19 44m13 46r15 47r21 48r29 49r19 50m13
+33a5 Results{10|3A10} 60m9 61m9 62m9 63r16
+68a5 Results1{10|3A10} 78m9 79r18 82r27 82r44 83r27 83r44 84r29
+69r5 Results2{10|4R10} 82m13 83m13 84m13 86r16
+
