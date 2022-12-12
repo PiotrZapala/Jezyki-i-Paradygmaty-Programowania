@@ -1,20 +1,48 @@
 import math
-p = 1234567891
+p = 1234577
 
 class GaloisField:
     def __init__(self, x=0):
         self.x = x
     #x + y
     def __add__(self, other):
-        return GaloisField((self.x + other.x) % p)
+        if (self.x < 0 and other.x > 0):
+            return GaloisField(((p+self.x) + other.x) % p)
+        elif (self.x > 0 and other.x < 0):
+            return GaloisField((self.x + (p+other.x)) % p)
+        elif (self.x < 0 and other.x < 0):
+            return GaloisField(((p+self.x) + (p+other.x)) % p)     
+        else:
+            return GaloisField((self.x + other.x) % p)
     #x - y
     def __sub__(self, other):
-        return GaloisField((self.x - other.x) % p)
+        if (self.x < 0 and other.x > 0):
+            return GaloisField(((p+self.x) - other.x) % p)
+        elif (self.x > 0 and other.x < 0):
+            return GaloisField((self.x - (p+other.x)) % p)
+        elif (self.x < 0 and other.x < 0):
+            return GaloisField(((p+self.x) - (p+other.x)) % p)     
+        else:
+            return GaloisField((self.x - other.x) % p)
     #x * y
     def __mul__(self, other):
-        return GaloisField((self.x * other.x) % p)
+        if (self.x < 0 and other.x > 0):
+            return GaloisField(((p+self.x) * other.x) % p)
+        elif (self.x > 0 and other.x < 0):
+            return GaloisField((self.x * (p+other.x)) % p)
+        elif (self.x < 0 and other.x < 0):
+            return GaloisField(((p+self.x) * (p+other.x)) % p)     
+        else:
+            return GaloisField((self.x * other.x) % p)
     #x / y
     def __truediv__(self, other):
+        if (self.x < 0 and other.x > 0):
+            self.x = p+self.x
+        elif (self.x > 0 and other.x < 0):
+            other.x=p+other.x
+        elif (self.x < 0 and other.x < 0):
+            self.x = p+self.x  
+            other.x=p+other.x  
         g, x, y = gcdExtended(other.x, p)
         if (g != 1):
             inv = -1
@@ -27,39 +55,94 @@ class GaloisField:
             return GaloisField((inv * self.x) % p)
     #x ^ y
     def __pow__(self, other):
+        if (self.x < 0 and other.x > 0):
+            self.x = p+self.x
+        elif (self.x > 0 and other.x < 0):
+            other.x=p+other.x-1
+        elif (self.x < 0 and other.x < 0):
+            self.x = p+self.x  
+            other.x=p+other.x-1  
         return GaloisField(pow(self.x, other.x, p))
     #x == y
     def __eq__(self, other):
+        if (self.x < 0 and other.x > 0):
+            self.x = p+self.x
+        elif (self.x > 0 and other.x < 0):
+            other.x=p+other.x
+        elif (self.x < 0 and other.x < 0):
+            self.x = p+self.x  
+            other.x=p+other.x  
+            
         if (self.x%p == other.x%p):
             return True;
         else:
             return False;
     #x < y
     def __lt__(self, other):
+        if (self.x < 0 and other.x > 0):
+            self.x = p+self.x
+        elif (self.x > 0 and other.x < 0):
+            other.x=p+other.x
+        elif (self.x < 0 and other.x < 0):
+            self.x = p+self.x  
+            other.x=p+other.x  
+
         if (self.x%p < other.x%p):
             return True;
         else:
             return False;
     #x > y
     def __gt__ (self, other):
+        if (self.x < 0 and other.x > 0):
+            self.x = p+self.x
+        elif (self.x > 0 and other.x < 0):
+            other.x=p+other.x
+        elif (self.x < 0 and other.x < 0):
+            self.x = p+self.x  
+            other.x=p+other.x  
+
         if (self.x%p > other.x%p):
             return True;
         else:
             return False;
     #x <= y
     def __le__(self, other):
+        if (self.x < 0 and other.x > 0):
+            self.x = p+self.x
+        elif (self.x > 0 and other.x < 0):
+            other.x=p+other.x
+        elif (self.x < 0 and other.x < 0):
+            self.x = p+self.x  
+            other.x=p+other.x  
+
         if (self.x%p <= other.x%p):
             return True;
         else:
             return False;
     #x >= y
     def __ge__(self, other):
+        if (self.x < 0 and other.x > 0):
+            self.x = p+self.x
+        elif (self.x > 0 and other.x < 0):
+            other.x=p+other.x
+        elif (self.x < 0 and other.x < 0):
+            self.x = p+self.x  
+            other.x=p+other.x  
+
         if (self.x%p >= other.x%p):
             return True;
         else:
             return False;
     #x != y
     def __ne__(self, other):
+        if (self.x < 0 and other.x > 0):
+            self.x = p+self.x
+        elif (self.x > 0 and other.x < 0):
+            other.x=p+other.x
+        elif (self.x < 0 and other.x < 0):
+            self.x = p+self.x  
+            other.x=p+other.x  
+
         if (self.x%p != other.x%p):
             return True;
         else:

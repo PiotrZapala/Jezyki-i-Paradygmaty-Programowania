@@ -1,59 +1,139 @@
 package galois.src.main.java;
-
 import java.util.Scanner;
 
 class GaloisField {
     public long x;
-    private static int p = 1234567891;
+    private static int p = 1234577;
 
     public GaloisField(long l) {
         this.x = l;
     }
     //x + y
     public GaloisField add(GaloisField gf) {
-        return new GaloisField((this.x + gf.x)%p);
+        GaloisField result;
+        if (this.x < 0 && gf.x > 0){
+            result =  new GaloisField((p+this.x + gf.x)%p);
+        }
+        else if (this.x < 0 && gf.x > 0){
+            result =  new GaloisField((this.x + (p+gf.x))%p);
+        }
+        else if (this.x < 0 && gf.x < 0){
+            result =  new GaloisField((p+this.x + p+gf.x)%p);
+        }
+        else {
+            result =  new GaloisField((this.x + gf.x)%p);
+        }
+        return result;
     }
 
     //x - y
     public GaloisField sub(GaloisField gf) {
-        return new GaloisField((this.x - gf.x)%p);
+        GaloisField result;
+        if (this.x < 0 && gf.x > 0){
+            result =  new GaloisField((p+this.x - gf.x)%p);
+        }
+        else if (this.x < 0 && gf.x > 0){
+            result =  new GaloisField((this.x - (p+gf.x))%p);
+        }
+        else if (this.x < 0 && gf.x < 0){
+            result =  new GaloisField((p+this.x - p+gf.x)%p);
+        }
+        else {
+            result =  new GaloisField((this.x - gf.x)%p);
+        }
+        return result;
     }
 
     //x * y
     public GaloisField mul(GaloisField gf) {
-        return new GaloisField((this.x * gf.x)%p);
+        GaloisField result;
+        if (this.x < 0 && gf.x > 0){
+            result =  new GaloisField((p+this.x * gf.x)%p);
+        }
+        else if (this.x < 0 && gf.x > 0){
+            result =  new GaloisField((this.x * (p+gf.x))%p);
+        }
+        else if (this.x < 0 && gf.x < 0){
+            result =  new GaloisField((p+this.x * p+gf.x)%p);
+        }
+        else {
+            result =  new GaloisField((this.x * gf.x)%p);
+        }
+        return result;
     }
 
     //x / y
     public GaloisField div(GaloisField gf) {
+        if (this.x < 0 && gf.x > 0){
+            this.x=p+this.x;
+        }
+        else if (this.x > 0 && gf.x < 0){
+            gf.x=p+gf.x;
+        }
+        else if (this.x < 0 && gf.x < 0){
+            this.x=p+this.x;
+            gf.x=p+gf.x;
+        }
+        long inv1 = 0;
         GaloisField result;
-        long inv;
-        long g = gcd(gf.x, p);
+        GaloisField inv;
+        GaloisField p1 = new GaloisField(p-2);
+        int g = (int) gcd(gf.x, p);
         if (g != 1) {
-            inv = -1;
+            inv1 = -1;
         }
         else {
-            inv = (int) Math.pow(gf.x, p - 2) % p;
+            inv = gf.pow(p1);
+            inv1 = inv.x;
         }
         this.x = this.x % p;
-        if (inv == -1) {
+        if (inv1 == -1) {
             System.out.println("Division not defined!");
             result = new GaloisField(0);
         }
         else {
-            result = new GaloisField((inv * this.x)%p);
+            result = new GaloisField((inv1 * this.x)%p);
         }
         return result;
     }
 
     //x ^ y
     public GaloisField pow(GaloisField gf) {
-        return new GaloisField((int) (Math.pow(x, gf.x) % p));
+        if (this.x < 0 && gf.x > 0){
+            this.x=p+this.x;
+        }
+        else if (this.x > 0 && gf.x < 0){
+            gf.x=p+gf.x-1;
+        }
+        else if (this.x < 0 && gf.x < 0){
+            this.x=p+this.x;
+            gf.x=p+gf.x-1;
+        }
+        long result = 1; 
+        long y = gf.x;
+        while (y > 0) {
+            if (y % 2 == 1) {
+                result = (result * this.x)%p;
+            }
+            y = y >> 1;
+            this.x = this.x * this.x%p; 
+        }
+        return new GaloisField(result);
     }
 
     //x == y
     public boolean eq(GaloisField gf) {
         boolean result;
+        if (this.x < 0 && gf.x > 0){
+            this.x=p+this.x;
+        }
+        else if (this.x > 0 && gf.x < 0){
+            gf.x=p+gf.x;
+        }
+        else if (this.x < 0 && gf.x < 0){
+            this.x=p+this.x;
+            gf.x=p+gf.x;
+        }
         if (this.x%p == gf.x%p) {
             result = true;
         }
@@ -66,6 +146,16 @@ class GaloisField {
     //x < y
     public boolean lt(GaloisField gf) {
         boolean result;
+        if (this.x < 0 && gf.x > 0){
+            this.x=p+this.x;
+        }
+        else if (this.x > 0 && gf.x < 0){
+            gf.x=p+gf.x;
+        }
+        else if (this.x < 0 && gf.x < 0){
+            this.x=p+this.x;
+            gf.x=p+gf.x;
+        }
         if (this.x%p < gf.x%p) {
             result = true;
         }
@@ -78,6 +168,16 @@ class GaloisField {
     //x > y
     public boolean gt(GaloisField gf) {
         boolean result;
+        if (this.x < 0 && gf.x > 0){
+            this.x=p+this.x;
+        }
+        else if (this.x > 0 && gf.x < 0){
+            gf.x=p+gf.x;
+        }
+        else if (this.x < 0 && gf.x < 0){
+            this.x=p+this.x;
+            gf.x=p+gf.x;
+        }
         if (this.x%p > gf.x%p) {
             result = true;
         }
@@ -90,6 +190,16 @@ class GaloisField {
     //x <= y
     public boolean le(GaloisField gf) {
         boolean result;
+        if (this.x < 0 && gf.x > 0){
+            this.x=p+this.x;
+        }
+        else if (this.x > 0 && gf.x < 0){
+            gf.x=p+gf.x;
+        }
+        else if (this.x < 0 && gf.x < 0){
+            this.x=p+this.x;
+            gf.x=p+gf.x;
+        }
         if (this.x%p <= gf.x%p) {
             result = true;
         }
@@ -102,6 +212,16 @@ class GaloisField {
     //x >= y
     public boolean ge(GaloisField gf) {
         boolean result;
+        if (this.x < 0 && gf.x > 0){
+            this.x=p+this.x;
+        }
+        else if (this.x > 0 && gf.x < 0){
+            gf.x=p+gf.x;
+        }
+        else if (this.x < 0 && gf.x < 0){
+            this.x=p+this.x;
+            gf.x=p+gf.x;
+        }
         if (this.x%p >= gf.x%p) {
             result = true;
         }
@@ -114,6 +234,16 @@ class GaloisField {
     //x != y
     public boolean ne(GaloisField gf) {
         boolean result;
+        if (this.x < 0 && gf.x > 0){
+            this.x=p+this.x;
+        }
+        else if (this.x > 0 && gf.x < 0){
+            gf.x=p+gf.x;
+        }
+        else if (this.x < 0 && gf.x < 0){
+            this.x=p+this.x;
+            gf.x=p+gf.x;
+        }
         if (this.x%p != gf.x%p) {
             result = true;
         }

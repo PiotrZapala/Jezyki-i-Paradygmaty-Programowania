@@ -4,13 +4,12 @@
 
 using namespace std;
 
-const int p = 1234567891;
-
 class GaloisField {
 
 public:
 
-    unsigned long long int x;
+    const int p = 1234577;
+    long long int x;
 
 public:
 
@@ -23,20 +22,68 @@ public:
     }
 
     GaloisField operator+(const GaloisField & gf) {
-        return GaloisField((this->x + gf.x)%p);
+        if(this->x < 0 && gf.x > 0) {
+            return GaloisField(((p+this->x) + gf.x)%p);
+        }
+        else if (this->x > 0 && gf.x < 0) {
+            return GaloisField((this->x + (p+gf.x))%p);         
+        }
+        else if (this->x < 0 && gf.x < 0) {
+            return GaloisField(((p+this->x) + (p+gf.x))%p);  
+        }
+        else {
+            return GaloisField((this->x + gf.x)%p); 
+        }
     }
     
     GaloisField operator -(const GaloisField & gf) {
-        return GaloisField((this->x - gf.x)%p);
+        if(this->x < 0 && gf.x > 0) {
+            return GaloisField(((p+this->x) - gf.x)%p);
+        }
+        else if (this->x > 0 && gf.x < 0) {
+            return GaloisField((this->x - (p+gf.x))%p);         
+        }
+        else if (this->x < 0 && gf.x < 0) {
+            return GaloisField(((p+this->x) - (p+gf.x))%p);  
+        }
+        else {
+            return GaloisField((this->x - gf.x)%p); 
+        }
     }
 
     GaloisField operator *(const GaloisField & gf) {
-        return GaloisField((this->x * gf.x)%p);
+        if(this->x < 0 && gf.x > 0) {
+            return GaloisField(((p+this->x) * gf.x)%p);
+        }
+        else if (this->x > 0 && gf.x < 0) {
+            return GaloisField((this->x * (p+gf.x))%p);         
+        }
+        else if (this->x < 0 && gf.x < 0) {
+            return GaloisField(((p+this->x) * (p+gf.x))%p);  
+        }
+        else {
+            return GaloisField((this->x * gf.x)%p); 
+        }
     }
 
     GaloisField operator /(const GaloisField & gf) {
+        GaloisField gfa;
+        if(this->x < 0 && gf.x > 0) {
+            this->x = p+this->x;
+            gfa.x = gf.x;   
+        }
+        else if (this->x > 0 && gf.x < 0) {
+            gfa.x = p+gf.x;         
+        }
+        else if (this->x < 0 && gf.x < 0) {
+            this->x = p+this->x;
+            gfa.x = p+gf.x;  
+        }
+        else {
+            gfa.x = gf.x;
+        }
         int x, y, inv;
-        int g = extendedEuclideanAlgorithm(gf.x, p, &x, &y);
+        int g = extendedEuclideanAlgorithm(gfa.x, p, &x, &y);
         if(g != 1)
             inv = -1;
         else    
@@ -49,40 +96,115 @@ public:
     }
 
     GaloisField operator ^(const GaloisField & gf) {
+        GaloisField gfa;
+        if(this->x < 0 && gf.x > 0) {
+            this->x = p+this->x;
+            gfa.x = gf.x;   
+        }
+        else if (this->x > 0 && gf.x < 0) {
+            gfa.x = p+gf.x-1;         
+        }
+        else if (this->x < 0 && gf.x < 0) {
+            this->x = p+this->x;
+            gfa.x = p+gf.x-1;  
+        }
+        else {
+            gfa.x = gf.x;
+        }
         unsigned long long int result = 1;
-        int y = gf.x;
+        int y = gfa.x;
         while (y > 0) {
             if (y % 2 == 1)
-                result = (result * this->x);
+                result = (result * this->x)%p;
             y = y >> 1;
-            this->x = (this->x * this->x);
+            this->x = (this->x * this->x)%p;
         }
-        return GaloisField(result%p);
+        return GaloisField(result);
     }
 
 
     bool operator ==(const GaloisField & gf) {
-        if (this->x%p == gf.x%p)
+        GaloisField gfa;
+        if(this->x < 0 && gf.x > 0) {
+            this->x = p+this->x;
+            gfa.x = gf.x;   
+        }
+        else if (this->x > 0 && gf.x < 0) {
+            gfa.x = p+gf.x;         
+        }
+        else if (this->x < 0 && gf.x < 0) {
+            this->x = p+this->x;
+            gfa.x = p+gf.x;  
+        }
+        else {
+            gfa.x = gf.x;
+        }
+        if (this->x%p == gfa.x%p)
             return true;
         else
             return false;
     }  
 
     bool operator !=(const GaloisField & gf) {
-        if (this->x%p != gf.x%p)
+        GaloisField gfa;
+        if(this->x < 0 && gf.x > 0) {
+            this->x = p+this->x;
+            gfa.x = gf.x;   
+        }
+        else if (this->x > 0 && gf.x < 0) {
+            gfa.x = p+gf.x;         
+        }
+        else if (this->x < 0 && gf.x < 0) {
+            this->x = p+this->x;
+            gfa.x = p+gf.x;  
+        }
+        else {
+            gfa.x = gf.x;
+        }
+        if (this->x%p != gfa.x%p)
             return true;
         else
             return false;
     }  
 
     bool operator >(const GaloisField & gf) {
-        if (this->x%p > gf.x%p)
+        GaloisField gfa;
+        if(this->x < 0 && gf.x > 0) {
+            this->x = p+this->x;
+            gfa.x = gf.x;   
+        }
+        else if (this->x > 0 && gf.x < 0) {
+            gfa.x = p+gf.x;         
+        }
+        else if (this->x < 0 && gf.x < 0) {
+            this->x = p+this->x;
+            gfa.x = p+gf.x;  
+        }
+        else {
+            gfa.x = gf.x;
+        }
+        if (this->x%p > gfa.x%p)
             return true;
         else
             return false;
     }  
 
     bool operator <(const GaloisField & gf) {
+        GaloisField gfa;
+        if(this->x < 0 && gf.x > 0) {
+            this->x = p+this->x;
+            gfa.x = gf.x;   
+        }
+        else if (this->x > 0 && gf.x < 0) {
+            gfa.x = p+gf.x;         
+        }
+        else if (this->x < 0 && gf.x < 0) {
+            this->x = p+this->x;
+            gfa.x = p+gf.x;  
+        }
+        else {
+            gfa.x = gf.x;
+        }
         if (this->x%p < gf.x%p)
             return true;
         else
@@ -90,6 +212,21 @@ public:
     }  
 
     bool operator >=(const GaloisField & gf) {
+        GaloisField gfa;
+        if(this->x < 0 && gf.x > 0) {
+            this->x = p+this->x;
+            gfa.x = gf.x;   
+        }
+        else if (this->x > 0 && gf.x < 0) {
+            gfa.x = p+gf.x;         
+        }
+        else if (this->x < 0 && gf.x < 0) {
+            this->x = p+this->x;
+            gfa.x = p+gf.x;  
+        }
+        else {
+            gfa.x = gf.x;
+        }
         if (this->x%p >= gf.x%p)
             return true;
         else
@@ -97,6 +234,21 @@ public:
     }  
 
     bool operator <=(const GaloisField & gf) {
+        GaloisField gfa;
+        if(this->x < 0 && gf.x > 0) {
+            this->x = p+this->x;
+            gfa.x = gf.x;   
+        }
+        else if (this->x > 0 && gf.x < 0) {
+            gfa.x = p+gf.x;         
+        }
+        else if (this->x < 0 && gf.x < 0) {
+            this->x = p+this->x;
+            gfa.x = p+gf.x;  
+        }
+        else {
+            gfa.x = gf.x;
+        }
         if (this->x%p <= gf.x%p)
             return true;
         else
@@ -174,6 +326,7 @@ int main() {
             break;
         cout << "Enter two numbers: ";
         cin >> num1.x >> num2.x;
+        printf("%d\n", num1.x);
         menu(oper, num1, num2);
     }
     return 0;
