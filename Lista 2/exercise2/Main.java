@@ -1,4 +1,4 @@
-package galois.src.main.java;
+package exercise2;
 import java.util.Scanner;
 
 class GaloisField {

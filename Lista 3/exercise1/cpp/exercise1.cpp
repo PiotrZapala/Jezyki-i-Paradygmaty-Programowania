@@ -1,68 +1,69 @@
 #include <stdio.h>
 #include <iostream>
 #include <math.h>
-
 using namespace std;
 
+template<typename P>
 class GaloisField {
 
 public:
-
-    const int p = 1234577;
-    long long int x;
+    P p;
+    P x;
 
 public:
 
     GaloisField() {
+        this->p = 0;
         this->x = 0;
     }
 
-    GaloisField(int x) {
-        this->x = x;
+    GaloisField(P prime, P number) {
+        this->p = prime;
+        this->x = number;
     }
 
     GaloisField operator+(const GaloisField & gf) {
         if(this->x < 0 && gf.x > 0) {
-            return GaloisField(((p+this->x) + gf.x)%p);
+            return GaloisField(p, ((p+this->x) + gf.x)%p);
         }
         else if (this->x > 0 && gf.x < 0) {
-            return GaloisField((this->x + (p+gf.x))%p);         
+            return GaloisField(p, (this->x + (p+gf.x))%p);         
         }
         else if (this->x < 0 && gf.x < 0) {
-            return GaloisField(((p+this->x) + (p+gf.x))%p);  
+            return GaloisField(p, ((p+this->x) + (p+gf.x))%p);  
         }
         else {
-            return GaloisField((this->x + gf.x)%p); 
+            return GaloisField(p, (this->x + gf.x)%p); 
         }
     }
     
     GaloisField operator -(const GaloisField & gf) {
         if(this->x < 0 && gf.x > 0) {
-            return GaloisField(((p+this->x) - gf.x)%p);
+            return GaloisField(p, ((p+this->x) - gf.x)%p);
         }
         else if (this->x > 0 && gf.x < 0) {
-            return GaloisField((this->x - (p+gf.x))%p);         
+            return GaloisField(p, (this->x - (p+gf.x))%p);         
         }
         else if (this->x < 0 && gf.x < 0) {
-            return GaloisField(((p+this->x) - (p+gf.x))%p);  
+            return GaloisField(p, ((p+this->x) - (p+gf.x))%p);  
         }
         else {
-            return GaloisField((this->x - gf.x)%p); 
+            return GaloisField(p, (this->x - gf.x)%p); 
         }
     }
 
     GaloisField operator *(const GaloisField & gf) {
         if(this->x < 0 && gf.x > 0) {
-            return GaloisField(((p+this->x) * gf.x)%p);
+            return GaloisField(p, ((p+this->x) * gf.x)%p);
         }
         else if (this->x > 0 && gf.x < 0) {
-            return GaloisField((this->x * (p+gf.x))%p);         
+            return GaloisField(p, (this->x * (p+gf.x))%p);         
         }
         else if (this->x < 0 && gf.x < 0) {
-            return GaloisField(((p+this->x) * (p+gf.x))%p);  
+            return GaloisField(p, ((p+this->x) * (p+gf.x))%p);  
         }
         else {
-            return GaloisField((this->x * gf.x)%p); 
+            return GaloisField(p, (this->x * gf.x)%p); 
         }
     }
 
@@ -90,9 +91,9 @@ public:
             inv = (x%p + p) % p;
         this->x = this->x%p;
         if (inv == -1)
-            return GaloisField(0);
+            return GaloisField(p, 0);
         else
-            return GaloisField((inv * this->x)%p);
+            return GaloisField(p, (inv * this->x)%p);
     }
 
     GaloisField operator ^(const GaloisField & gf) {
@@ -111,7 +112,7 @@ public:
         else {
             gfa.x = gf.x;
         }
-        unsigned long long int result = 1;
+        P result = 1;
         int y = gfa.x;
         while (y > 0) {
             if (y % 2 == 1)
@@ -119,7 +120,7 @@ public:
             y = y >> 1;
             this->x = (this->x * this->x)%p;
         }
-        return GaloisField(result);
+        return GaloisField(p, result);
     }
 
 
@@ -255,6 +256,10 @@ public:
             return false;
     }  
 
+    friend ostream& operator <<(ostream& s, const GaloisField & gf) {
+        return s << gf.x;
+    }
+
     int extendedEuclideanAlgorithm(int a, int b, int *x, int *y) {
         if (a == 0){
             *x = 0, *y = 1;
@@ -266,15 +271,10 @@ public:
         *y = x1;
         return gcd;
     }
-
-
 };
 
-ostream& operator <<(ostream& s, const GaloisField& gf) {
-    return s << gf.x;
-}
 
-void menu(int oper, GaloisField num1, GaloisField num2) {
+void menu(int oper, GaloisField<long long int> num1, GaloisField<long long int> num2) {
     switch (oper) {
         case 1:
             cout << num1 << " + " << num2 << " = " << num1 + num2 << endl;
@@ -318,14 +318,19 @@ void menu(int oper, GaloisField num1, GaloisField num2) {
 int main() {
     bool cond = true;
     int oper;
-    GaloisField num1, num2;
+    int prime;
+    long long int number1, number2;
     while (true) {
         cout << "Enter an operation\n 1. '+'\n 2. '-'\n 3. '*'\n 4. '/'\n 5. '^'\n 6. '=='\n 7. '<'\n 8. '>'\n 9. '<='\n 10. '>='\n 11. '!='\n To quit press '0'!\n ";
         cin >> oper;
         if (oper == 0)
             break;
+        cout << "Enter prime number: ";
+        cin >> prime;
         cout << "Enter two numbers: ";
-        cin >> num1.x >> num2.x;
+        cin >> number1;
+        cin >> number2; 
+        GaloisField<long long int> num1(prime, number1), num2(prime, number2);
         printf("%d\n", num1.x);
         menu(oper, num1, num2);
     }
